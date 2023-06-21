@@ -75,4 +75,13 @@ public class Server implements Runnable{
         System.out.println(headers);
         return headers;
     }
+
+    public static HashMap<String, String> requestParams(String paramsStr){
+        HashMap<String, String> params = new HashMap<>();
+        for(String param: paramsStr.split("&")){
+            String[] pair = param.split("=");
+            params.put(pair[0], pair[1]);
+        }
+        return params;
+    }
 }
