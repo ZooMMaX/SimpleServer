@@ -26,5 +26,5 @@ public interface PostHandler extends HttpHandler {
         exchange.close();
     }
 
-    String response(String request);
+    String response(String requestBody);
 }
