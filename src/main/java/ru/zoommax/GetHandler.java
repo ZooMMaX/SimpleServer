@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public interface StdHandler extends HttpHandler {
+public interface GetHandler extends HttpHandler {
     @Override
     default void handle(HttpExchange exchange) throws IOException {
         String request = Server.decode(exchange.getRequestURI().getRawQuery());
