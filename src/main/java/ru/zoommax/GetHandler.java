@@ -9,8 +9,9 @@ import java.io.OutputStream;
 public interface GetHandler extends HttpHandler {
     @Override
     default void handle(HttpExchange exchange) throws IOException {
+        String clientIp = Server.getIp(exchange);
         String request = Server.decode(exchange.getRequestURI().getRawQuery());
-        String respText = response(request);
+        String respText = response(request, clientIp);
         exchange.sendResponseHeaders(200, respText.getBytes().length);
         OutputStream output = exchange.getResponseBody();
         output.write(respText.getBytes());
@@ -18,5 +19,5 @@ public interface GetHandler extends HttpHandler {
         exchange.close();
     }
 
-    String response(String request);
+    String response(String request, String clientIp);
 }

@@ -84,4 +84,13 @@ public class Server implements Runnable{
         }
         return params;
     }
+
+    public static String getIp(HttpExchange httpExchange){
+        HashMap<String,String> headers = requestHeaders(httpExchange);
+        if(headers.containsKey("x-forwarded-for"))
+            return headers.get("x-forwarded-for");
+        else {
+            return httpExchange.getRemoteAddress().getAddress().getHostAddress();
+        }
+    }
 }

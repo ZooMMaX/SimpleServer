@@ -10,6 +10,7 @@ public interface PostHandler extends HttpHandler {
     default void handle(HttpExchange exchange) throws IOException {
         String respText = "only post";
         if (exchange.getRequestMethod().equalsIgnoreCase("POST")){
+            String clientIp = Server.getIp(exchange);
             InputStream is = exchange.getRequestBody();
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -17,7 +18,7 @@ public interface PostHandler extends HttpHandler {
                     .lines()
                     .forEach( (String s) -> stringBuilder.append(s).append("\n"));
 
-            respText = response(stringBuilder.toString());
+            respText = response(stringBuilder.toString(), clientIp);
         }
         exchange.sendResponseHeaders(200, respText.getBytes().length);
         OutputStream output = exchange.getResponseBody();
@@ -26,5 +27,5 @@ public interface PostHandler extends HttpHandler {
         exchange.close();
     }
 
-    String response(String requestBody);
+    String response(String requestBody, String clientIp);
 }
