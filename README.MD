@@ -1,6 +1,6 @@
 # Welcome to SimpleServer Library!
 
-SimpleServer is a lightweight Java library that allows for quick and easy usage of an embedded web server. It provides a seamless way to add and remove endpoints on the fly, while offering fast access to request bodies, headers, and parameters. With SimpleServer, you can effortlessly handle POST and GET requests and retrieve responses.
+SimpleServer is a lightweight Java library that allows for quick and easy usage of an embedded web server. It provides a seamless way to add and remove endpoints on the fly, while offering fast access to request bodies, headers, and parameters. With SimpleServer, you can effortlessly handle POST and GET requests and send responses.
 
 ## Key Features and Benefits
 
