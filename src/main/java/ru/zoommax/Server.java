@@ -15,10 +15,39 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class for creating http server in second thread,
+ * adding and removing endpoints, getting request headers and params, getting client ip,
+ * decoding url, sending response.
+ * @see Server#endPoint(String, HttpHandler)
+ * @see Server#remEndPoint(String)
+ * @see Server#requestHeaders(HttpExchange)
+ * @see Server#requestParams(String)
+ * @see Server#getIp(HttpExchange)
+ * @see Server#decode(String)
+ * @see Server#run()
+ * @see Server#Server(int)
+ * @author ZooMMaX
+ * @version 1.3
+ * @since 13.10.23
+ */
 public class Server implements Runnable{
 
+    /**
+     * HttpServer object
+     * @see HttpServer
+     */
     private static HttpServer server;
+
+    /**
+     * Port number on which the server will be running
+     */
     private int port;
+
+    /**
+     * Server initialization.<br>For start server use {@link #run()}<br>
+     * @param port port number on which the server will be running
+     */
     public Server(int port){
         this.port = port;
     }
@@ -47,16 +76,30 @@ public class Server implements Runnable{
         executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.DAYS);
     }
 
+    /**
+     * Add endpoint to server
+     * @param endpoint {@link String} endpoint url. Example: "api/v1/test" <b>without root slash</b>
+     * @param handler {@link HttpHandler} for endpoint. You can use {@link GetHandler} or {@link PostHandler} interfaces.
+     */
     public static void endPoint(String endpoint, HttpHandler handler){
         server.createContext(endpoint, handler);
         System.out.println("add "+endpoint);
     }
 
+    /**
+     * Remove endpoint from server
+     * @param endpoint {@link String} endpoint url. Example: "api/v1/test" <b>without root slash</b>
+     */
     public static void remEndPoint(String endpoint){
         server.removeContext(endpoint);
         System.out.println("remove "+endpoint);
     }
 
+    /**
+     * Decode url. Used in {@link GetHandler} and {@link PostHandler} interfaces.
+     * @param encoded {@link String} encoded url
+     * @return {@link String} decoded url
+     */
     public static String decode(final String encoded) {
         try {
             return encoded == null ? null : URLDecoder.decode(encoded, "UTF-8");
@@ -65,6 +108,11 @@ public class Server implements Runnable{
         }
     }
 
+    /**
+     * Get request headers. Used in {@link GetHandler} and {@link PostHandler} interfaces.
+     * @param httpExchange {@link HttpExchange} object
+     * @return {@link HashMap} with headers
+     */
     public static HashMap<String, String> requestHeaders(HttpExchange httpExchange){
         Headers exchangeHeaders = httpExchange.getRequestHeaders();
         HashMap<String, String> headers = new HashMap<>();
@@ -76,6 +124,11 @@ public class Server implements Runnable{
         return headers;
     }
 
+    /**
+     * Get request params. Used in {@link GetHandler} and {@link PostHandler} interfaces.
+     * @param paramsStr {@link String} params string. Example: "param1=value1&param2=value2"
+     * @return {@link HashMap} with params
+     */
     public static HashMap<String, String> requestParams(String paramsStr){
         HashMap<String, String> params = new HashMap<>();
         for(String param: paramsStr.split("&")){
@@ -85,6 +138,11 @@ public class Server implements Runnable{
         return params;
     }
 
+    /**
+     * Get client ip. Used in {@link GetHandler} and {@link PostHandler} interfaces.
+     * @param httpExchange {@link HttpExchange} object
+     * @return {@link String} client ip
+     */
     public static String getIp(HttpExchange httpExchange){
         HashMap<String,String> headers = requestHeaders(httpExchange);
         if(headers.containsKey("x-forwarded-for"))
