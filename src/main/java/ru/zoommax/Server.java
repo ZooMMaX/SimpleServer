@@ -126,7 +126,7 @@ public class Server implements Runnable{
 
     /**
      * Get request params. Used in {@link GetHandler} and {@link PostHandler} interfaces.
-     * @param paramsStr {@link String} params string. Example: "param1=value1&param2=value2"
+     * @param paramsStr {@link String} params string. Example: "param1=value1{@literal &}param2=value2"
      * @return {@link HashMap} with params
      */
     public static HashMap<String, String> requestParams(String paramsStr){

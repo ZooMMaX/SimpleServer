@@ -51,7 +51,7 @@
 
         <plugin.nexus.staging.ver>1.6.13</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
-        <plugin.maven.javadoc.ver>3.4.0</plugin.maven.javadoc.ver>
+        <plugin.maven.javadoc.ver>3.6.0</plugin.maven.javadoc.ver>
         <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
         <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
     </properties>
