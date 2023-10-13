@@ -62,7 +62,7 @@ public class Test {
 // Additionally, you can pass an HttpHandler to the endpoint builder. GetHandler and PostHandler inherit from HttpHandler.
 ```
 
-## Dependecy
+## Dependency
 
 ![dependency maven](https://img.shields.io/badge/DEPENDENCY-Maven-C71A36?style=plastic&logo=apachemaven)
 ```xml
