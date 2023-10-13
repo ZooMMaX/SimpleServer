@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
+import java.util.HashMap;
 
 public interface PostHandler extends HttpHandler {
     @Override
@@ -18,7 +19,7 @@ public interface PostHandler extends HttpHandler {
                     .lines()
                     .forEach( (String s) -> stringBuilder.append(s).append("\n"));
 
-            respText = response(stringBuilder.toString(), clientIp);
+            respText = response(stringBuilder.toString(), Server.requestHeaders(exchange), clientIp);
         }
         exchange.sendResponseHeaders(200, respText.getBytes().length);
         OutputStream output = exchange.getResponseBody();
@@ -27,5 +28,5 @@ public interface PostHandler extends HttpHandler {
         exchange.close();
     }
 
-    String response(String requestBody, String clientIp);
+    String response(String requestBody, HashMap<String,String> requestHeaders, String clientIp);
 }
