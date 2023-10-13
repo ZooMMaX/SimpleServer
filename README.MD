@@ -58,6 +58,24 @@ public class Test {
 // Additionally, you can pass an HttpHandler to the endpoint builder. GetHandler and PostHandler inherit from HttpHandler.
 ```
 
+## Dependecy
+
+![dependency maven](https://img.shields.io/badge/DEPENDENCY-Maven-C71A36?style=plastic&logo=apachemaven)
+```xml
+<dependencies>
+    <dependency>
+        <groupId>ru.zoommax</groupId>
+        <artifactId>SimpleServer</artifactId>
+        <version>1.3</version>
+    </dependency>
+</dependencies>
+```
+
+![dependency gradle](https://img.shields.io/badge/DEPENDENCY-Gradle-02303A?style=plastic&logo=gradle)
+```groovy
+implementation 'ru.zoommax:SimpleServer:1.3'
+```
+
 That's it! You're now ready to build your small APIs using SimpleServer.
 
 Please note that this is just a basic example, and you can explore more advanced features and configurations in the SimpleServer documentation.
