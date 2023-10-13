@@ -62,6 +62,6 @@ That's it! You're now ready to build your small APIs using SimpleServer.
 
 Please note that this is just a basic example, and you can explore more advanced features and configurations in the SimpleServer documentation.
 
-I'am hope you find SimpleServer helpful for your web server needs. If you have any questions or need further assistance, please don't hesitate to reach out.
+I'am hope you find SimpleServer helpful for your web server needs. If you have any questions or need further assistance, please don't hesitate to open issue.
 
 Happy coding!
