@@ -1,5 +1,9 @@
 # Welcome to SimpleServer Library!
 
+![Maven Central](https://img.shields.io/maven-central/v/ru.zoommax/SimpleServer?style=plastic)
+![GitHub](https://img.shields.io/github/license/ZooMMaX/SimpleServer?style=plastic)
+[![GitHub issues](https://img.shields.io/github/issues/ZooMMaX/SimpleServer?style=plastic)](https://github.com/ZooMMaX/SimpleServer/issues)
+
 SimpleServer is a lightweight Java library that allows for quick and easy usage of an embedded web server. It provides a seamless way to add and remove endpoints on the fly, while offering fast access to request bodies, headers, and parameters. With SimpleServer, you can effortlessly handle POST and GET requests and send responses.
 
 ## Key Features and Benefits
