@@ -37,7 +37,7 @@ public interface PostHandler extends HttpHandler {
 
             new BufferedReader(new InputStreamReader(is))
                     .lines()
-                    .forEach( (String s) -> stringBuilder.append(s).append("\n"));
+                    .forEach( (String s) -> stringBuilder.append(s));
 
             respText = response(stringBuilder.toString(), Server.requestHeaders(exchange), clientIp);
         }
