@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Server implements Runnable{
 
-    Logger logger = LoggerFactory.getLogger(Server.class);
+    static Logger logger = LoggerFactory.getLogger(Server.class);
 
     /**
      * HttpServer object
@@ -93,7 +93,7 @@ public class Server implements Runnable{
      */
     public static void endPoint(String endpoint, HttpHandler handler){
         server.createContext(endpoint, handler);
-        System.out.println("add "+endpoint);
+        logger.info("add "+endpoint);
     }
 
     /**
@@ -102,7 +102,7 @@ public class Server implements Runnable{
      */
     public static void remEndPoint(String endpoint){
         server.removeContext(endpoint);
-        System.out.println("remove "+endpoint);
+        logger.info("remove "+endpoint);
     }
 
     /**
@@ -114,7 +114,8 @@ public class Server implements Runnable{
         try {
             return encoded == null ? null : URLDecoder.decode(encoded, "UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            throw new RuntimeException("UTF-8 is a required encoding", e);
+            logger.error("UTF-8 is a required encoding", e);
+            return "";
         }
     }
 
