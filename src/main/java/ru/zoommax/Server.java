@@ -5,7 +5,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -33,6 +36,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class Server implements Runnable{
 
+    Logger logger = LoggerFactory.getLogger(Server.class);
+
     /**
      * HttpServer object
      * @see HttpServer
@@ -54,26 +59,31 @@ public class Server implements Runnable{
     public Server(){}
 
     @Override
-    @SneakyThrows
     public void run() {
-        server = HttpServer.create(new InetSocketAddress(port), 0);
+        try {
+            server = HttpServer.create(new InetSocketAddress(port), 0);
 
-        server.createContext("/alife", exchange -> {
-            System.out.println("req");
-            String request = Server.decode(exchange.getRequestURI().getRawQuery());
-            System.out.println(request);
-            String respText ="life";
-            exchange.sendResponseHeaders(200, respText.getBytes().length);
-            OutputStream output = exchange.getResponseBody();
-            output.write(respText.getBytes());
-            output.flush();
-            exchange.close();
-        });
+            server.createContext("/alife", exchange -> {
+                logger.info("request to /alife");
+                String request = Server.decode(exchange.getRequestURI().getRawQuery());
+                logger.info("request: "+request);
+                String respText = "life";
+                exchange.sendResponseHeaders(200, respText.getBytes().length);
+                OutputStream output = exchange.getResponseBody();
+                output.write(respText.getBytes());
+                output.flush();
+                exchange.close();
+            });
 
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        server.setExecutor(executor); // creates a default executor
-        server.start();
-        executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.DAYS);
+            ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+            server.setExecutor(executor); // creates a default executor
+            server.start();
+            executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.DAYS);
+        } catch (IOException e) {
+            logger.error("IOException", e);
+        } catch (InterruptedException e) {
+            logger.error("InterruptedException", e);
+        }
     }
 
     /**

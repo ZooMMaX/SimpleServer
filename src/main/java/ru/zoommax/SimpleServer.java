@@ -1,6 +1,12 @@
 package ru.zoommax;
 
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
+import java.util.Iterator;
 
 /**
  * SimpleServer
@@ -13,11 +19,15 @@ public class SimpleServer {
      * Server initialization.<br>For start server use {@link #init(int port)}<br>
      * @param port port number on which the server will be running
      * */
-    @SneakyThrows
     public static void init(int port){
+        Logger logger = LoggerFactory.getLogger(SimpleServer.class);
         new Thread(new Server(port)).start();
-        System.out.println("Wait 2s before SimpleServer has started");
-        Thread.sleep(2000);
-        System.out.println("SimpleServer is run");
+        logger.info("Wait 2s before SimpleServer has started");
+        try {
+            Thread.sleep(2000);
+            logger.info("SimpleServer is run");
+        } catch (InterruptedException e) {
+            logger.error("Error in SimpleServer.init", e);
+        }
     }
 }

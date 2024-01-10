@@ -2,6 +2,8 @@ package ru.zoommax;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.HashMap;
@@ -20,6 +22,9 @@ import java.util.HashMap;
  * @since 13.10.23
  * */
 public interface PostHandler extends HttpHandler {
+
+    Logger logger = LoggerFactory.getLogger(PostHandler.class);
+
     /**
      * Method for creating <b>POST</b> method endpoints.<br>
      * This method is called when a request is received.<br>
@@ -28,7 +33,7 @@ public interface PostHandler extends HttpHandler {
      * @param exchange {@link HttpExchange} object
      * */
     @Override
-    default void handle(HttpExchange exchange) throws IOException {
+    default void handle(HttpExchange exchange) {
         String respText = "only post";
         if (exchange.getRequestMethod().equalsIgnoreCase("POST")){
             String clientIp = Server.getIp(exchange);
@@ -41,11 +46,15 @@ public interface PostHandler extends HttpHandler {
 
             respText = response(stringBuilder.toString(), Server.requestHeaders(exchange), clientIp);
         }
-        exchange.sendResponseHeaders(200, respText.getBytes().length);
-        OutputStream output = exchange.getResponseBody();
-        output.write(respText.getBytes());
-        output.flush();
-        exchange.close();
+        try {
+            exchange.sendResponseHeaders(200, respText.getBytes().length);
+            OutputStream output = exchange.getResponseBody();
+            output.write(respText.getBytes());
+            output.flush();
+            exchange.close();
+        } catch (IOException e) {
+            logger.error("Error in PostHandler.handle", e);
+        }
     }
 
     /**

@@ -2,6 +2,8 @@ package ru.zoommax;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,6 +26,7 @@ import java.util.HashMap;
  * @since 13.10.23
  * */
 public interface GetHandler extends HttpHandler {
+    Logger logger = LoggerFactory.getLogger(GetHandler.class);
     /**
      * Method for creating <b>GET</b> method endpoints.<br>
      * This method is called when a request is received.<br>
@@ -32,7 +35,7 @@ public interface GetHandler extends HttpHandler {
      * @param exchange {@link HttpExchange} object
      * */
     @Override
-    default void handle(HttpExchange exchange) throws IOException {
+    default void handle(HttpExchange exchange) {
         String clientIp = Server.getIp(exchange);
         String request = Server.decode(exchange.getRequestURI().getRawQuery());
         HashMap<String,String> requestHeaders = Server.requestHeaders(exchange);
@@ -41,11 +44,15 @@ public interface GetHandler extends HttpHandler {
             requestParams = Server.requestParams(request);
         }
         String respText = response(request, requestHeaders, requestParams, clientIp);
-        exchange.sendResponseHeaders(200, respText.getBytes().length);
-        OutputStream output = exchange.getResponseBody();
-        output.write(respText.getBytes());
-        output.flush();
-        exchange.close();
+        try {
+            exchange.sendResponseHeaders(200, respText.getBytes().length);
+            OutputStream output = exchange.getResponseBody();
+            output.write(respText.getBytes());
+            output.flush();
+            exchange.close();
+        } catch (IOException e) {
+            logger.error("Error in GetHandler.handle", e);
+        }
     }
 
     /**
