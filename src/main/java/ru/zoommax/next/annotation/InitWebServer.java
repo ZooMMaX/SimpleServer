@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
  * @see Endpoint
  * @see SimpleServer#start()
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface InitWebServer {
     /**

@@ -25,8 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * SimpleServer
@@ -34,11 +33,30 @@ import java.util.Set;
  * @version 1.6
  * @since 11.01.24
  */
-public final class SimpleServer {
+public class SimpleServer {
 
     public static Thread serverThread;
 
     public static final Logger logger = LoggerFactory.getLogger("SimpleServer");
+
+    private static final Reflections reflections = new Reflections(new ConfigurationBuilder()
+            .setUrls(ClasspathHelper.forPackage(""))
+            .setScanners(Scanners.SubTypes, Scanners.ConstructorsAnnotated, Scanners.MethodsAnnotated, Scanners.FieldsAnnotated, Scanners.TypesAnnotated));
+
+    static {
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(InitWebServer.class);
+        for (Class<?> clazz : annotated) {
+            if (clazz.isAnnotationPresent(InitWebServer.class)) {
+                InitWebServer initWebServer = clazz.getAnnotation(InitWebServer.class);
+                if (serverThread == null || !serverThread.isAlive()) {
+                    serverThread = new Thread(ServerNext.getInstance(initWebServer.port(), initWebServer.threads()));
+                    serverThread.start();
+                }
+            }
+        }
+        addEndpointsFromAnnotation();
+    }
+
     /**
      * Server initialization.<br>For start server use {@link #init(int port)}<br>
      * This method is deprecated in version 1.6. Use {@link #start()} instead.<br>
@@ -85,9 +103,6 @@ public final class SimpleServer {
      * */
 
     public static void start() {
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forPackage(""))
-                .setScanners(Scanners.SubTypes, Scanners.ConstructorsAnnotated, Scanners.MethodsAnnotated, Scanners.FieldsAnnotated, Scanners.TypesAnnotated));
 
         Set<Method> initWebServerAnnotated = reflections.getMethodsAnnotatedWith(InitWebServer.class);
 
@@ -100,7 +115,10 @@ public final class SimpleServer {
                 }
             }
         }
+        addEndpointsFromAnnotation();
+    }
 
+    private static void addEndpointsFromAnnotation(){
         Set<Method> addEndpointAnnotated = reflections.getMethodsAnnotatedWith(Endpoint.class);
 
         for (Method method : addEndpointAnnotated) {
