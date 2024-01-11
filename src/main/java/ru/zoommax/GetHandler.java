@@ -2,12 +2,12 @@ package ru.zoommax;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+
+import static ru.zoommax.SimpleServer.logger;
 
 /**
  * Interface for creating <b>GET</b> method endpoints.
@@ -25,8 +25,8 @@ import java.util.HashMap;
  * @version 1.3
  * @since 13.10.23
  * */
+@Deprecated
 public interface GetHandler extends HttpHandler {
-    Logger logger = LoggerFactory.getLogger(GetHandler.class);
     /**
      * Method for creating <b>GET</b> method endpoints.<br>
      * This method is called when a request is received.<br>

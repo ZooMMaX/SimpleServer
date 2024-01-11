@@ -2,11 +2,11 @@ package ru.zoommax;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.HashMap;
+
+import static ru.zoommax.SimpleServer.logger;
 
 /**
  * Interface for creating <b>POST</b> method endpoints.
@@ -21,10 +21,8 @@ import java.util.HashMap;
  * @version 1.3
  * @since 13.10.23
  * */
+@Deprecated
 public interface PostHandler extends HttpHandler {
-
-    Logger logger = LoggerFactory.getLogger(PostHandler.class);
-
     /**
      * Method for creating <b>POST</b> method endpoints.<br>
      * This method is called when a request is received.<br>

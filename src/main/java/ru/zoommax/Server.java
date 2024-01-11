@@ -4,9 +4,10 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+
+import static ru.zoommax.SimpleServer.logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,9 +35,8 @@ import java.util.concurrent.TimeUnit;
  * @version 1.3
  * @since 13.10.23
  */
+@Deprecated
 public class Server implements Runnable{
-
-    static Logger logger = LoggerFactory.getLogger(Server.class);
 
     /**
      * HttpServer object
@@ -131,7 +131,6 @@ public class Server implements Runnable{
             key = key.toLowerCase();
             headers.put(key, exchangeHeaders.getFirst(key));
         }
-        System.out.println(headers);
         return headers;
     }
 

@@ -8,9 +8,10 @@ import lombok.Builder;
  * Class for build (use builder pattern) and add or remove endpoints.
  * @see EndPoint#add()
  * @see EndPoint#remove()
+ * @see EndPoint#addNew()
  * @author ZooMMaX
- * @version 1.3
- * @since 13.10.23
+ * @version 1.6
+ * @since 11.01.24
  */
 @Builder
 public class EndPoint {
@@ -27,6 +28,7 @@ public class EndPoint {
     /**
      * Add endpoint to server
      */
+    @Deprecated
     public void add(){
         Server.endPoint("/"+endPointName, handler);
     }
@@ -34,7 +36,15 @@ public class EndPoint {
     /**
      * Remove endpoint from server
      */
+    @Deprecated
     public void remove(){
         Server.remEndPoint(endPointName);
+    }
+
+    /**
+     * Add endpoint to server
+     */
+    public void addNew() {
+        SimpleServer.addEndpoint(endPointName, handler);
     }
 }

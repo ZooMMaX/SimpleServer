@@ -18,11 +18,16 @@ SimpleServer is a lightweight Java library that allows for quick and easy usage 
 
 To get started with SimpleServer, you need to explicitly start the server and then pass the endpoints to it.
 
-Here's an example of how to use SimpleServer:
+Here's an example of how to use SimpleServer (Deprecated):
 
 ```java
 // Import libraries
-import ru.zoommax.*;
+
+import ru.zoommax.EndPoint;
+import ru.zoommax.GetHandler;
+import ru.zoommax.PostHandler;
+import ru.zoommax.SimpleServer;
+
 import java.util.HashMap;
 
 public class Test {
@@ -70,14 +75,14 @@ public class Test {
     <dependency>
         <groupId>ru.zoommax</groupId>
         <artifactId>SimpleServer</artifactId>
-        <version>1.5</version>
+        <version>1.6</version>
     </dependency>
 </dependencies>
 ```
 
 ![dependency gradle](https://img.shields.io/badge/DEPENDENCY-Gradle-02303A?style=plastic&logo=gradle)
 ```groovy
-implementation 'ru.zoommax:SimpleServer:1.5'
+implementation 'ru.zoommax:SimpleServer:1.6'
 ```
 
 That's it! You're now ready to build your small APIs using SimpleServer.
