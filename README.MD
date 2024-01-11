@@ -67,6 +67,76 @@ public class Test {
 // Additionally, you can pass an HttpHandler to the endpoint builder. GetHandler and PostHandler inherit from HttpHandler.
 ```
 
+Here's an example of how to use SimpleServer (New):
+
+Annotation-based implementation
+
+```java
+//Import libraries
+import ru.zoommax.SimpleServer;
+import ru.zoommax.next.Request;
+import ru.zoommax.next.Response;
+import ru.zoommax.next.annotation.Endpoint;
+import ru.zoommax.next.annotation.InitWebServer;
+import ru.zoommax.next.enums.HttpMethod;
+
+public class AnnotatedStart {
+    //Initialization of server with port 12345 and 4 threads using annotation InitWebServer
+    @InitWebServer(port = 12345, threads = 4)
+    public static void main(String[] args) {
+        //Start server using SimpleServer.start()
+        SimpleServer.start();
+    }
+
+    //Add endpoint using annotation Endpoint
+    @Endpoint(path = "/test", httpMethod = HttpMethod.GET, statusCode = 200, filterContentLength = -1)
+    public Response test(Request request) {
+        //Endpoint logic
+        String body = request.getBodyAsString();
+        //...
+
+        //Return response
+        return Response.builder()
+                .bodyAsString(body)
+                .statusCode(200)
+                .build();
+    }
+}
+```
+Not-annotation-based implementation
+
+```java
+import ru.zoommax.SimpleServer;
+import ru.zoommax.next.Response;
+import ru.zoommax.next.handlers.GetHandlerNew;
+
+import java.util.HashMap;
+
+public class NotAnnotatedStart {
+    //Initialization of server with port 12345 and 4 threads and start it
+    public static void main(String[] args) {
+        SimpleServer.start(12345, 4);
+        test();
+    }
+
+    //Add endpoint using SimpleServer.addEndpoint()
+    public static void test() {
+        SimpleServer.addEndpoint("/test", new GetHandlerNew() {
+            @Override
+            public Response response(String request, HashMap<String, String> requestHeaders, HashMap<String, String> requestParams, String clientIp) {
+                //Endpoint logic
+                String body = request;
+                //...
+                return Response.builder()
+                        .bodyAsString(body)
+                        .statusCode(200)
+                        .build();
+            }
+        });
+    }
+}
+```
+
 ## Dependency
 
 ![dependency maven](https://img.shields.io/badge/DEPENDENCY-Maven-C71A36?style=plastic&logo=apachemaven)
