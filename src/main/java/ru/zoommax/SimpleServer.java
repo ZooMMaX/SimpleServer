@@ -65,7 +65,7 @@ public final class SimpleServer {
      * Start server on default port (8080) with available processors - 1 threads:<br>
      * <pre>
      *     {@code
-     *     @InitWebServer
+     *     {@literal @}InitWebServer
      *     public static void main(String[] args) {
      *         SimpleServer.start();
      *     }
@@ -74,7 +74,7 @@ public final class SimpleServer {
      * Start server on custom port and custom threads:<br>
      * <pre>
      *     {@code
-     *     @InitWebServer(port = 25565, threads = 4)
+     *     {@literal @}InitWebServer(port = 25565, threads = 4)
      *     public static void main(String[] args) {
      *         SimpleServer.start();
      *     }
@@ -147,8 +147,8 @@ public final class SimpleServer {
      *         SimpleServer.start(25565, 4);
      *
      *         HttpHandler handler = new GetHandlerNew() {
-     *             @Override
-     *             public Response response(String request, HashMap<String, String> requestHeaders, HashMap<String, String> requestParams, String clientIp) {
+     *             {@literal @}Override
+     *             public Response response(String request, HashMap&lt;String, String&gt; requestHeaders, HashMap&lt;String, String&gt; requestParams, String clientIp) {
      *                 return Response.builder()
      *                   .bodyAsString("Hello world")
      *                   .statusCode(200)
@@ -159,6 +159,7 @@ public final class SimpleServer {
      *         SimpleServer.addEndpoint("/test", handler);
      *     }
      *     }
+     * </pre>
      * @param port port number on which the server will be running
      * @param threads number of threads for the server
      * */
@@ -270,8 +271,8 @@ public final class SimpleServer {
      *     public static void main(String[] args) {
      *          SimpleServer.start(25565, 4);
      *          HttpHandler handler = new GetHandlerNew() {
-     *              @Override
-     *              public Response response(String request, HashMap<String, String> requestHeaders, HashMap<String, String> requestParams, String clientIp) {
+     *              {@literal @}}Override
+     *              public Response response(String request, HashMap&lt;String, String&gt; requestHeaders, HashMap&lt;String, String&gt; requestParams, String clientIp) {
      *                  return Response.builder()
      *                      .bodyAsString("Hello world")
      *                      .statusCode(200)
@@ -280,8 +281,7 @@ public final class SimpleServer {
      *          }
      *          SimpleServer.addEndpoint("/test", handler);
      *     }
-     *     }
-     *
+     * </pre>
      * @param endPointName endpoint name
      * @param handler {@link HttpHandler}
      * @see Endpoint

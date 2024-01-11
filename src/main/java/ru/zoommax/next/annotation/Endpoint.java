@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  * <b>Example:</b><br>
  * <pre>
  *     {@code
- *     @Endpoint(path = "/test", httpMethod = HttpMethod.GET, statusCode = 200, filterContentLength = -1)
+ *     {@literal @}Endpoint(path = "/test", httpMethod = HttpMethod.GET, statusCode = 200, filterContentLength = -1)
  *     public Response test(Request request){
  *          return Response.builder()
  *              .bodyAsString(request.getBodyAsString())

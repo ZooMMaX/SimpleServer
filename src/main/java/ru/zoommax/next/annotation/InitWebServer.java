@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  Start server on default port (8080) with available processors - 1 threads:<br>
  * <pre>
  *     {@code
- *     @InitWebServer
+ *     {@literal @}InitWebServer
  *     public static void main(String[] args) {
  *         SimpleServer.start();
  *     }
@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  * Start server on custom port and custom threads:<br>
  * <pre>
  *     {@code
- *     @InitWebServer(port = 25565, threads = 4)
+ *     {@literal @}InitWebServer(port = 25565, threads = 4)
  *     public static void main(String[] args) {
  *         SimpleServer.start();
  *     }
