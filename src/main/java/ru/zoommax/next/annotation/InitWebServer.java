@@ -42,9 +42,12 @@ public @interface InitWebServer {
      * @return {@link Integer} threads of server. Default - 1
      */
     int threads() default 1;
-
     /**
-     * @return {@link String} docRoot of server. Default - ""
+     * @return {@link String} title of home page. Default - "Documentation of API"
      */
-    String docRoot() default "";
+    String titleHomePage() default "Documentation of API";
+    /**
+     * @return {@link String} description of home page. Default - "This is a documentation of API. You can see all available endpoints and their descriptions."
+     */
+    String descriptionHomePage() default "This is a documentation of API. You can see all available endpoints and their descriptions.";
 }

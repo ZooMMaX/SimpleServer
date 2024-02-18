@@ -14,6 +14,7 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.zoommax.next.annotation.documentation.CreateDocumentation;
 import ru.zoommax.next.annotation.documentation.DocsGenerator;
 import ru.zoommax.next.enums.HttpMethod;
 import ru.zoommax.next.handlers.GetHandlerNew;
@@ -56,6 +57,7 @@ public class SimpleServer {
             }
         }
         addEndpointsFromAnnotation();
+        addDocs();
     }
 
     /**
@@ -117,6 +119,7 @@ public class SimpleServer {
             }
         }
         addEndpointsFromAnnotation();
+        addDocs();
     }
 
     private static void addEndpointsFromAnnotation(){
@@ -145,8 +148,28 @@ public class SimpleServer {
                 serverNext.addEndpoint(endpoint.path(), handler);
             }
         }
-        DocsGenerator docsGenerator = new DocsGenerator();
-        docsGenerator.generateDocs();
+    }
+
+    private static void addDocs(){
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(CreateDocumentation.class);
+        for (Class<?> clazz : annotated) {
+            if (clazz.isAnnotationPresent(CreateDocumentation.class)) {
+                CreateDocumentation createDocumentation = clazz.getAnnotation(CreateDocumentation.class);
+                if (createDocumentation.value()) {
+                    DocsGenerator.getInstance().generateDocsMethod(clazz);
+                }
+            }
+        }
+        annotated = reflections.getTypesAnnotatedWith(InitWebServer.class);
+        for (Class<?> clazz : annotated) {
+            if (clazz.isAnnotationPresent(InitWebServer.class) && clazz.isAnnotationPresent(CreateDocumentation.class)) {
+                CreateDocumentation createDocumentation = clazz.getAnnotation(CreateDocumentation.class);
+                if (createDocumentation.value()) {
+                    DocsGenerator.getInstance().generateDocs(clazz);
+                    break;
+                }
+            }
+        }
     }
 
     /**
