@@ -277,9 +277,11 @@ Properties
 | `newAddress` | `Boolean` | Create new address                        | `true`   |
 | `amount`     | `Double`  | Amount                                    | `true`   |
 | `address`    | `String`  | Address (required if newAddress is false) | `false`  |
+
 Request
 -------
 Create payment
+
 Response
 --------
 `200`
