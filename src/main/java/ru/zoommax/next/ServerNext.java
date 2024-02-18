@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import lombok.Getter;
 import ru.zoommax.SimpleServer;
+import ru.zoommax.next.annotation.documentation.DocsGenerator;
 
 import java.io.IOException;
 import java.io.OutputStream;

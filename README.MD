@@ -170,6 +170,152 @@ public class NotAnnotatedStart {
 }
 ```
 
+# Generated documentation for the endpoint
+
+The documentation is generated in the MarkDown format. All documentation is described in the form of annotations. The title page of the documentation is available at `http(s)://localhost:port/docs`.
+
+Example of generated documentation for the endpoint:
+
+```java
+@InitWebServer(port = 8080, docRoot = "API")
+public class API extends SimpleServer {
+    private static CryptoWallet wallet;
+    private static final Logger logger = LoggerFactory.getLogger(API.class);
+    public void start(CryptoWallet wallet){
+        API.wallet = wallet;
+        SimpleServer.start();
+    }
+
+    @Endpoint(path = "/api/v1/createPayment", httpMethod = HttpMethod.GET)
+    @ApiVersion("1.0")
+    @PropertyDoc(name = {"newAddress", "amount", "address"},
+            description = {"Create new address", "Amount", "Address (required if newAddress is false)"},
+            type = {"Boolean", "Double", "String"},
+            required = {true, true, false})
+    @RequestDoc("Create payment")
+    @ResponseDoc(code = {200}, description = "\n" +
+            "Payment created. Returns json with payment info\n" +
+            "\n" +
+            "Example: \n" +
+            "```json\n" +
+            "{\n" +
+            "\"UID\": \"123e4567-e89b-12d3-a456-426614174000-1622542800000\",\n" +
+            "\"address\": \"1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa\",\n" +
+            "\"amount\": 0.01,\n" +
+            "\"createDate\": 1622542800000,\n" +
+            "\"expirationDate\": 1622546400000,\n" +
+            "\"paidDate\": 0,\n" +
+            "\"status\": \"WAITING\"\n" +
+            "}\n" +
+            "```\n" +
+            "UID - Unique ID of payment\n" +
+            "\n" +
+            "address - Address to send payment\n" +
+            "\n" +
+            "amount - Amount of payment\n" +
+            "\n" +
+            "createDate - Date of creation\n" +
+            "\n" +
+            "expirationDate - Date of expiration\n" +
+            "\n" +
+            "paidDate - Date of payment\n" +
+            "\n" +
+            "status - Status of payment\n" +
+            "\n" +
+            "Statuses: WAITING, PAID, EXPIRED, NULL")
+    public static Response createPayment(Request request) {
+        logger.debug(request.getParams()+"");
+        PaymentPojo paymentPojo = new PaymentPojo();
+        String body = "";
+        boolean newAddress = request.getParams().get("newAddress") != null && request.getParams().get("newAddress").equals("true");
+        logger.debug("New address: " + newAddress);
+        String address = "";
+        if (newAddress) {
+            address = wallet.getReceiveAddress();
+        } else {
+            address = request.getParams().get("address");
+        }
+        logger.debug("Address: " + address);
+        double amount = request.getParams().get("amount") != null ? Double.parseDouble(request.getParams().get("amount")) : 0;
+        logger.debug("Amount: " + amount);
+        if (amount > 0) {
+            paymentPojo.setUID(UUID.randomUUID() + "-" + System.currentTimeMillis());
+            paymentPojo.setAmount(amount);
+            paymentPojo.setAddress(address);
+            paymentPojo.setCreateDate(System.currentTimeMillis());
+            paymentPojo.setExpirationDate(System.currentTimeMillis() + 3600000);
+            paymentPojo.setStatus(PaymentStatus.WAITING);
+            if (paymentPojo.insert()) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    body = objectMapper.writeValueAsString(paymentPojo);
+                } catch (Exception e) {
+                    logger.error("Error creating payment", e);
+                }
+            }
+        }
+        return Response.builder()
+                .bodyAsString(body)
+                .statusCode(200)
+                .build();
+    }
+}
+```
+
+### MD result Example:
+
+---
+
+/api/v1/createPayment
+=====================
+Method: GET
+
+Properties
+----------
+| Name         | Type      | Description                               | Required |
+| ------------ | --------- | ----------------------------------------- | -------- |
+| `newAddress` | `Boolean` | Create new address                        | `true`   |
+| `amount`     | `Double`  | Amount                                    | `true`   |
+| `address`    | `String`  | Address (required if newAddress is false) | `false`  |
+Request
+-------
+Create payment
+Response
+--------
+`200`
+
+Payment created. Returns json with payment info
+
+Example:
+```json
+{
+  "UID": "123e4567-e89b-12d3-a456-426614174000-1622542800000",
+  "address": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+  "amount": 0.01,
+  "createDate": 1622542800000,
+  "expirationDate": 1622546400000,
+  "paidDate": 0,
+  "status": "WAITING"
+}
+```
+UID - Unique ID of payment
+
+address - Address to send payment
+
+amount - Amount of payment
+
+createDate - Date of creation
+
+expirationDate - Date of expiration
+
+paidDate - Date of payment
+
+status - Status of payment
+
+Statuses: WAITING, PAID, EXPIRED, NULL
+
+---
+
 ## Dependency
 
 ![dependency maven](https://img.shields.io/badge/DEPENDENCY-Maven-C71A36?style=plastic&logo=apachemaven)
@@ -178,14 +324,14 @@ public class NotAnnotatedStart {
     <dependency>
         <groupId>ru.zoommax</groupId>
         <artifactId>SimpleServer</artifactId>
-        <version>1.7</version>
+        <version>1.8</version>
     </dependency>
 </dependencies>
 ```
 
 ![dependency gradle](https://img.shields.io/badge/DEPENDENCY-Gradle-02303A?style=plastic&logo=gradle)
 ```groovy
-implementation 'ru.zoommax:SimpleServer:1.7'
+implementation 'ru.zoommax:SimpleServer:1.8'
 ```
 
 That's it! You're now ready to build your small APIs using SimpleServer.

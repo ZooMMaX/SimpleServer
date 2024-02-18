@@ -42,4 +42,9 @@ public @interface InitWebServer {
      * @return {@link Integer} threads of server. Default - 1
      */
     int threads() default 1;
+
+    /**
+     * @return {@link String} docRoot of server. Default - ""
+     */
+    String docRoot() default "";
 }

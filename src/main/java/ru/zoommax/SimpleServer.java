@@ -14,6 +14,7 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.zoommax.next.annotation.documentation.DocsGenerator;
 import ru.zoommax.next.enums.HttpMethod;
 import ru.zoommax.next.handlers.GetHandlerNew;
 import ru.zoommax.next.handlers.PostHandlerNew;
@@ -144,6 +145,8 @@ public class SimpleServer {
                 serverNext.addEndpoint(endpoint.path(), handler);
             }
         }
+        DocsGenerator docsGenerator = new DocsGenerator();
+        docsGenerator.generateDocs();
     }
 
     /**
