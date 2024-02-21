@@ -113,7 +113,8 @@ public class SimpleServer {
             if (method.isAnnotationPresent(InitWebServer.class)) {
                 InitWebServer initWebServer = method.getAnnotation(InitWebServer.class);
                 if (serverThread == null || !serverThread.isAlive()) {
-                    serverThread = new Thread(ServerNext.getInstance(initWebServer.port(), initWebServer.threads()));
+                    serverThread = new Thread(ServerNext.getInstance(initWebServer.port(),
+                            initWebServer.threads() == 0 ? Runtime.getRuntime().availableProcessors() - 1 : initWebServer.threads()));
                     serverThread.start();
                 }
             }

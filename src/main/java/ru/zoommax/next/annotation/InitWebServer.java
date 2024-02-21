@@ -39,9 +39,9 @@ public @interface InitWebServer {
      */
     int port() default 8080;
     /**
-     * @return {@link Integer} threads of server. Default - 1
+     * @return {@link Integer} threads of server. Default - 0 (available processors - Runtime.getRuntime().availableProcessors()-1)
      */
-    int threads() default 1;
+    int threads() default 0;
     /**
      * @return {@link String} title of home page. Default - "Documentation of API"
      */
