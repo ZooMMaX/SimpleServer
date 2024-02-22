@@ -37,7 +37,7 @@ public class ServerNext implements Runnable{
 
     public static ServerNext getInstance(int port, int threads) {
         if (instance == null) {
-            instance = new ServerNext(port, threads);
+            instance = new ServerNext(port, threads == 0 ? Runtime.getRuntime().availableProcessors() -1 : threads);
         }
         return instance;
     }
