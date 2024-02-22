@@ -13,18 +13,19 @@ import ru.zoommax.next.handlers.GetHandlerNew;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 public class DocsGenerator {
     private static DocsGenerator instance;
     String homepage;
-    List<String> endpointsPages;
-    List<String> endpointsLinks;
+    HashMap<String, String> endpointsPages;
+    HashMap<String, String> endpointsLinks;
 
     private DocsGenerator() {
-        endpointsPages = new ArrayList<>();
-        endpointsLinks = new ArrayList<>();
+        endpointsPages = new HashMap<>();
+        endpointsLinks = new HashMap<>();
         homepage = "";
     }
 
@@ -43,29 +44,32 @@ public class DocsGenerator {
             homepageSB.append(new Heading(annotation.descriptionHomePage(), 3)).append("\n\n");
             homepageSB.append("Port: ").append(annotation.port()).append("\n\n");
             List<Link> links = new ArrayList<>();
-            for (String endpointsLink : endpointsLinks) {
-                links.add(new Link(endpointsLink));
+            for (int x = 0; x < endpointsLinks.size(); x++) {
+                String key = endpointsLinks.keySet().toArray()[x].toString();
+                links.add(new Link(endpointsLinks.get(key)));
+                addDocEndpoint(key);
             }
             homepageSB.append(new UnorderedList<>(links));
             homepage = homepageSB.toString();
         }
 
-        ServerNext serverNext = ServerNext.getInstance();
-        for (int x = 0; x < endpointsLinks.size(); x++) {
-            int finalX = x;
-            serverNext.addEndpoint(endpointsLinks.get(x), (GetHandlerNew) (request, requestHeaders, requestParams, clientIp) -> {
-                String sb = "<script src=\"https://rawcdn.githack.com/oscarmorrison/md-page/232e97938de9f4d79f4110f6cfd637e186b63317/md-page.js\"></script><noscript>" + "\n\n" +
-                        endpointsPages.get(finalX) + "\n\n";
-                return Response.builder()
-                        .bodyAsString(sb)
-                        .statusCode(200)
-                        .build();
-            });
-        }
 
+        ServerNext serverNext = ServerNext.getInstance();
         serverNext.addEndpoint("/docs", (GetHandlerNew) (request, requestHeaders, requestParams, clientIp) -> {
             String sb = "<script src=\"https://rawcdn.githack.com/oscarmorrison/md-page/232e97938de9f4d79f4110f6cfd637e186b63317/md-page.js\"></script><noscript>" + "\n\n" +
                     homepage + "\n\n";
+            return Response.builder()
+                    .bodyAsString(sb)
+                    .statusCode(200)
+                    .build();
+        });
+    }
+
+    private void addDocEndpoint(String key) {
+        ServerNext serverNext = ServerNext.getInstance();
+        serverNext.addEndpoint(endpointsLinks.get(key), (GetHandlerNew) (request, requestHeaders, requestParams, clientIp) -> {
+            String sb = "<script src=\"https://rawcdn.githack.com/oscarmorrison/md-page/232e97938de9f4d79f4110f6cfd637e186b63317/md-page.js\"></script><noscript>" + "\n\n" +
+                    endpointsPages.get(key) + "\n\n";
             return Response.builder()
                     .bodyAsString(sb)
                     .statusCode(200)
@@ -114,16 +118,16 @@ public class DocsGenerator {
                         sb.append(responseDoc.description()[i]).append("\n\n");
                     }
                 }
-                endpointsPages.add(sb.toString());
+
                 if (method.isAnnotationPresent(ApiVersion.class)) {
                     ApiVersion apiVersion = method.getAnnotation(ApiVersion.class);
-                    endpointsLinks.add("/docs/api/v" + apiVersion.value() + "/" + method.getName());
+                    endpointsPages.put(apiVersion.value()+method.getName(), sb.toString());
+                    endpointsLinks.put(apiVersion.value()+method.getName(), "/docs/api/v" + apiVersion.value() + "/" + method.getName());
                 }else {
-                    endpointsLinks.add("/docs/api/" + method.getName());
+                    endpointsPages.put(method.getName(), sb.toString());
+                    endpointsLinks.put(method.getName(), "/docs/api/" + method.getName());
                 }
             }
         }
-        endpointsPages = new ArrayList<>(new HashSet<>(endpointsPages));
-        endpointsLinks = new ArrayList<>(new HashSet<>(endpointsLinks));
     }
 }
