@@ -287,8 +287,11 @@ public class SimpleServer {
                     Object obj = method.getDeclaringClass().getDeclaredConstructor().newInstance();
                     Request req = new Request();
                     req.setBodyAsStream(requestBody);
-                    req.setBodyAsBytes(requestBody.readAllBytes());
-                    req.setBodyAsString(new String(requestBody.readAllBytes(), StandardCharsets.UTF_8));
+                    byte[] bodyBytes = requestBody.readAllBytes();
+                    req.setBodyAsBytes(bodyBytes);
+                    String bodyString = new String(req.getBodyAsBytes(), StandardCharsets.UTF_8);
+                    req.setBodyAsString(bodyString);
+                    System.out.println(req.getBodyAsString());
                     req.setHeaders(requestHeaders);
                     req.setClientIp(clientIp);
                     Response response = (Response) method.invoke(obj, req);

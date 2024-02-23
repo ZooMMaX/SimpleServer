@@ -3,13 +3,12 @@ package ru.zoommax.next.handlers;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
-import ru.zoommax.PostHandler;
-import ru.zoommax.Server;
 import ru.zoommax.SimpleServer;
 import ru.zoommax.next.Response;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 import static ru.zoommax.SimpleServer.logger;
