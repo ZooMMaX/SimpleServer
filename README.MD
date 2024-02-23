@@ -335,14 +335,14 @@ Statuses: WAITING, PAID, EXPIRED, NULL
     <dependency>
         <groupId>ru.zoommax</groupId>
         <artifactId>SimpleServer</artifactId>
-        <version>1.9.2</version>
+        <version>1.9.3</version>
     </dependency>
 </dependencies>
 ```
 
 ![dependency gradle](https://img.shields.io/badge/DEPENDENCY-Gradle-02303A?style=plastic&logo=gradle)
 ```groovy
-implementation 'ru.zoommax:SimpleServer:1.9.2'
+implementation 'ru.zoommax:SimpleServer:1.9.3'
 ```
 
 That's it! You're now ready to build your small APIs using SimpleServer.
