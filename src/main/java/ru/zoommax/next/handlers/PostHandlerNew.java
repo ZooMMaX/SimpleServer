@@ -15,7 +15,7 @@ import static ru.zoommax.SimpleServer.logger;
 
 /**
  * Interface for creating <b>POST</b> method endpoints.
- * @see PostHandlerNew#response(InputStream, HashMap, String)
+ * @see PostHandlerNew#response(InputStream, HashMap, HashMap, String)
  * @see PostHandlerNew#handle(HttpExchange)
  * @see SimpleServer#addEndpoint(String, HttpHandler)
  * @see SimpleServer#requestHeaders(HttpExchange)
