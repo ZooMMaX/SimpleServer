@@ -268,7 +268,7 @@ public class SimpleServer {
     private static HttpHandler postHandler(Method method) {
         return new PostHandlerNew() {
             @Override
-            public Response response(InputStream requestBody, HashMap<String, String> requestHeaders, String clientIp) {
+            public Response response(InputStream requestBody, HashMap<String, String> requestHeaders,HashMap<String, String> requestParams, String clientIp) {
                 if (requestHeaders.containsKey("content-length") && method.getAnnotation(Endpoint.class).filterContentLength() > -1) {
                     int contentLength = Integer.parseInt(requestHeaders.get("content-length"));
                     if (contentLength > method.getAnnotation(Endpoint.class).filterContentLength()) {
@@ -292,6 +292,7 @@ public class SimpleServer {
                     String bodyString = new String(req.getBodyAsBytes(), StandardCharsets.UTF_8);
                     req.setBodyAsString(bodyString);
                     req.setHeaders(requestHeaders);
+                    req.setParams(requestParams);
                     req.setClientIp(clientIp);
                     Response response = (Response) method.invoke(obj, req);
                     if (response.getStatusCode() == 0) {

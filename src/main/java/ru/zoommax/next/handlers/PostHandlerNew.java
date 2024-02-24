@@ -30,17 +30,22 @@ public interface PostHandlerNew extends HttpHandler {
      * Method for creating <b>POST</b> method endpoints.<br>
      * This method is called when a request is received.<br>
      * In this method automatically get request headers, request body and client ip.<br>
-     * @see PostHandlerNew#response(InputStream, HashMap, String)
+     * @see PostHandlerNew#response(InputStream, HashMap, HashMap, String)
      * @param exchange {@link HttpExchange} object
      * */
     @Override
     default void handle(HttpExchange exchange) {
         Response resp = Response.builder().bodyAsString("only post").statusCode(200).build();
+        String request = SimpleServer.decode(exchange.getRequestURI().getRawQuery());
+        HashMap<String,String> requestParams = new HashMap<>();
+        if (request != null && !request.isEmpty()){
+            requestParams = SimpleServer.requestParams(request);
+        }
         if (exchange.getRequestMethod().equalsIgnoreCase("POST")){
             String clientIp = SimpleServer.getIp(exchange);
             InputStream is = exchange.getRequestBody();
 
-            resp = response(is, SimpleServer.requestHeaders(exchange), clientIp);
+            resp = response(is, SimpleServer.requestHeaders(exchange), requestParams, clientIp);
         }
         byte[] respText = resp.getBodyAsBytes();
         if (respText == null) {
@@ -71,5 +76,5 @@ public interface PostHandlerNew extends HttpHandler {
      * @param clientIp {@link String} client ip
      * @return {@link String} response text
      */
-    Response response(InputStream requestBody, HashMap<String,String> requestHeaders, String clientIp);
+    Response response(InputStream requestBody, HashMap<String,String> requestHeaders, HashMap<String, String> requestParams, String clientIp);
 }
