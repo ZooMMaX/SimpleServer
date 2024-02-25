@@ -41,8 +41,8 @@ public class SimpleServer {
 
     public static final Logger logger = LoggerFactory.getLogger("SimpleServer");
 
-    private static final Reflections reflections = new Reflections(new ConfigurationBuilder()
-            .setUrls(ClasspathHelper.forPackage(""))
+    private static Reflections reflections = new Reflections(new ConfigurationBuilder()
+            .setUrls(ClasspathHelper.forPackage(Thread.currentThread().getStackTrace()[2].toString().split("\\.")[0]))
             .setScanners(Scanners.SubTypes, Scanners.ConstructorsAnnotated, Scanners.MethodsAnnotated, Scanners.FieldsAnnotated, Scanners.TypesAnnotated));
 
     static {
@@ -106,7 +106,6 @@ public class SimpleServer {
      * */
 
     public static void start() {
-
         Set<Method> initWebServerAnnotated = reflections.getMethodsAnnotatedWith(InitWebServer.class);
 
         for (Method method : initWebServerAnnotated) {

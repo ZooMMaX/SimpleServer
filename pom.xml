@@ -6,7 +6,7 @@
 
     <groupId>ru.zoommax</groupId>
     <artifactId>SimpleServer</artifactId>
-    <version>1.9.4</version>
+    <version>1.9.5</version>
     <name>Simple Server library</name>
     <description>HTTP server</description>
     <url>https://github.com/ZooMMaX/SimpleServer</url>
