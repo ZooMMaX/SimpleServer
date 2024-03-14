@@ -55,9 +55,9 @@ public interface GetHandlerNew extends HttpHandler {
         if (headers == null) {
             headers = new Headers();
         }
+        exchange.getResponseHeaders().putAll(headers);
         try {
             exchange.sendResponseHeaders(respCode, respBytes.length);
-            exchange.getResponseHeaders().putAll(headers);
             OutputStream output = exchange.getResponseBody();
             output.write(respBytes);
             output.flush();

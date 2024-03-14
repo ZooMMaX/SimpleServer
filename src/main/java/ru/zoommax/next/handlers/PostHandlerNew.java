@@ -56,9 +56,9 @@ public interface PostHandlerNew extends HttpHandler {
         if (headers == null) {
             headers = new Headers();
         }
+        exchange.getResponseHeaders().putAll(headers);
         try {
             exchange.sendResponseHeaders(respCode, respText.length);
-            exchange.getResponseHeaders().putAll(headers);
             OutputStream output = exchange.getResponseBody();
             output.write(respText);
             output.flush();
