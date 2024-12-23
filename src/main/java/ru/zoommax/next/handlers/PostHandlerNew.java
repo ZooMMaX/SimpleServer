@@ -64,7 +64,9 @@ public interface PostHandlerNew extends HttpHandler {
             output.flush();
             exchange.close();
         } catch (IOException e) {
-            logger.error("Error in PostHandler.handle", e);
+            logger.warn("Error in PostHandler.handle", e);
+        } finally {
+            exchange.close();
         }
     }
 

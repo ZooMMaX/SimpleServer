@@ -63,7 +63,9 @@ public interface GetHandlerNew extends HttpHandler {
             output.flush();
             exchange.close();
         } catch (IOException e) {
-            logger.error("Error in GetHandler.handle", e);
+            logger.warn("Error in GetHandler.handle", e);
+        } finally {
+            exchange.close();
         }
     }
 
