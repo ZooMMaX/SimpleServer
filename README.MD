@@ -1,6 +1,6 @@
 # Welcome to SimpleServer Library!
 
-![Maven Central](https://img.shields.io/maven-central/v/ru.zoommax/SimpleServer?style=plastic)
+![Maven Central](https://img.shields.io/maven-central/v/space.zoommax/SimpleServer?style=plastic)
 ![GitHub](https://img.shields.io/github/license/ZooMMaX/SimpleServer?style=plastic)
 [![GitHub issues](https://img.shields.io/github/issues/ZooMMaX/SimpleServer?style=plastic)](https://github.com/ZooMMaX/SimpleServer/issues)
 
@@ -31,10 +31,10 @@ Here's an example of how to use SimpleServer (Deprecated):
 ```java
 // Import libraries
 
-import ru.zoommax.EndPoint;
-import ru.zoommax.GetHandler;
-import ru.zoommax.PostHandler;
-import ru.zoommax.SimpleServer;
+import space.zoommax.EndPoint;
+import space.zoommax.GetHandler;
+import space.zoommax.PostHandler;
+import space.zoommax.SimpleServer;
 
 import java.util.HashMap;
 
@@ -81,12 +81,13 @@ Annotation-based implementation
 
 ```java
 //Import libraries
-import ru.zoommax.SimpleServer;
-import ru.zoommax.next.Request;
-import ru.zoommax.next.Response;
-import ru.zoommax.next.annotation.Endpoint;
-import ru.zoommax.next.annotation.InitWebServer;
-import ru.zoommax.next.enums.HttpMethod;
+
+import space.zoommax.SimpleServer;
+import space.zoommax.next.Request;
+import space.zoommax.next.Response;
+import space.zoommax.next.annotation.Endpoint;
+import space.zoommax.next.annotation.InitWebServer;
+import space.zoommax.next.enums.HttpMethod;
 
 public class AnnotatedStart {
     //Initialization of server with port 12345 and 4 threads using annotation InitWebServer
@@ -115,12 +116,12 @@ public class AnnotatedStart {
 Annotation-based implementation with extends
 
 ```java
-import ru.zoommax.SimpleServer;
-import ru.zoommax.next.Request;
-import ru.zoommax.next.Response;
-import ru.zoommax.next.annotation.Endpoint;
-import ru.zoommax.next.annotation.InitWebServer;
-import ru.zoommax.next.enums.HttpMethod;
+import space.zoommax.SimpleServer;
+import space.zoommax.next.Request;
+import space.zoommax.next.Response;
+import space.zoommax.next.annotation.Endpoint;
+import space.zoommax.next.annotation.InitWebServer;
+import space.zoommax.next.enums.HttpMethod;
 
 @InitWebServer(port = 12345, threads = 4)
 public class AnnotatedStartWithExtends extends SimpleServer {
@@ -141,9 +142,9 @@ public class AnnotatedStartWithExtends extends SimpleServer {
 Not-annotation-based implementation
 
 ```java
-import ru.zoommax.SimpleServer;
-import ru.zoommax.next.Response;
-import ru.zoommax.next.handlers.GetHandlerNew;
+import space.zoommax.SimpleServer;
+import space.zoommax.next.Response;
+import space.zoommax.next.handlers.GetHandlerNew;
 
 import java.util.HashMap;
 
@@ -330,19 +331,21 @@ Statuses: WAITING, PAID, EXPIRED, NULL
 ## Dependency
 
 ![dependency maven](https://img.shields.io/badge/DEPENDENCY-Maven-C71A36?style=plastic&logo=apachemaven)
+
 ```xml
+
 <dependencies>
     <dependency>
-        <groupId>ru.zoommax</groupId>
+        <groupId>space.zoommax</groupId>
         <artifactId>SimpleServer</artifactId>
-        <version>1.9.5</version>
+        <version>1.9.8</version>
     </dependency>
 </dependencies>
 ```
 
 ![dependency gradle](https://img.shields.io/badge/DEPENDENCY-Gradle-02303A?style=plastic&logo=gradle)
 ```groovy
-implementation 'ru.zoommax:SimpleServer:1.9.5'
+implementation 'space.zoommax:SimpleServer:1.9.8'
 ```
 
 That's it! You're now ready to build your small APIs using SimpleServer.
